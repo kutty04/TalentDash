@@ -26,23 +26,32 @@ interface SalaryRecord {
 
 interface TableProps {
   data: SalaryRecord[];
-  displayCurrency: 'INR' | 'USD';
+  displayCurrency: Currency;
   currentSort?: string;
   currentOrder?: string;
   currentParams?: Record<string, string>;
 }
 
+const CONVERSION_RATES: Record<Currency, number> = {
+  [Currency.USD]: 1.0,
+  [Currency.INR]: 83.5,
+  [Currency.GBP]: 0.79,
+  [Currency.EUR]: 0.92,
+};
+
 export function SalaryTable({ data, displayCurrency, currentSort, currentOrder, currentParams }: TableProps) {
   const getDisplayValue = (amount: number, recordCurrency: Currency) => {
-    // Live Conversion: If display currency differs from database record currency
-    let val = amount;
-    const rate = 83.5; // Consistent exchange rate config
-
-    if (displayCurrency === 'USD' && recordCurrency === 'INR') {
-      val = Math.round(amount / rate);
-    } else if (displayCurrency === 'INR' && recordCurrency === 'USD') {
-      val = Math.round(amount * rate);
+    if (displayCurrency === recordCurrency) {
+      return formatCurrencyValue(amount, displayCurrency);
     }
+
+    // Convert to USD first (base currency)
+    const rateToUSD = CONVERSION_RATES[recordCurrency] || 1.0;
+    const amountInUSD = amount / rateToUSD;
+
+    // Convert from USD to displayCurrency
+    const rateFromUSD = CONVERSION_RATES[displayCurrency] || 1.0;
+    const val = Math.round(amountInUSD * rateFromUSD);
 
     return formatCurrencyValue(val, displayCurrency);
   };

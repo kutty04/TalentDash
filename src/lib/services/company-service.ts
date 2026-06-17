@@ -39,7 +39,27 @@ export async function findCompanyBySlug(slug: string) {
 }
 
 /**
+ * Exchange rates to normalize any supported currency into INR.
+ * These mirror the rates already used by the display layer (salary-table.tsx)
+ * so that aggregated statistics are internally consistent with displayed values.
+ *
+ * Derivation:
+ *   USD base rate = 1.0 → 1 USD = 83.5 INR
+ *   GBP rate vs USD = 0.79 → 1 GBP = (1/0.79) × 83.5 ≈ 105.70 INR
+ *   EUR rate vs USD = 0.92 → 1 EUR = (1/0.92) × 83.5 ≈ 90.76 INR
+ */
+const COMP_TO_INR: Record<string, number> = {
+  INR: 1.0,
+  USD: 83.5,
+  GBP: 105.70,
+  EUR: 90.76,
+};
+
+/**
  * Calculates aggregated statistics (true statistical median, boundaries, level counts) for a company.
+ * All monetary statistics (median, min, max) are normalized to INR before computation so that
+ * mixed-currency companies (e.g., Google with USD/GBP/INR records) are ranked correctly.
+ * The display layer remains responsible for per-record formatting and conversion.
  */
 export function getCompanyStats(salaries: any[]): CompanyStats {
   const totalRecords = salaries.length;
@@ -53,15 +73,17 @@ export function getCompanyStats(salaries: any[]): CompanyStats {
     };
   }
 
-  // 1. Sort compensation figures to compute boundaries and median
+  // 1. Normalize all total_compensation values to INR, then sort for statistical calculations.
+  //    Without this step, raw integers across currencies are compared directly, producing
+  //    incorrect ordering (e.g. GBP £85,000 < INR ₹1,600,000 numerically, but > in real value).
   const sortedCompensations = salaries
-    .map((s) => s.total_compensation)
+    .map((s) => Math.round(s.total_compensation * (COMP_TO_INR[s.currency] ?? 1.0)))
     .sort((a, b) => a - b);
 
   const minTotalCompensation = sortedCompensations[0];
   const maxTotalCompensation = sortedCompensations[sortedCompensations.length - 1];
 
-  // 2. Compute True Statistical Median
+  // 2. Compute True Statistical Median (on INR-normalized values)
   let medianTotalCompensation = 0;
   const midIndex = Math.floor(totalRecords / 2);
   if (totalRecords % 2 === 0) {
@@ -74,7 +96,7 @@ export function getCompanyStats(salaries: any[]): CompanyStats {
     medianTotalCompensation = sortedCompensations[midIndex];
   }
 
-  // 3. Compute Level Distribution count
+  // 3. Compute Level Distribution count (currency-agnostic, unchanged)
   const levelDistribution = {} as Record<Level, number>;
   salaries.forEach((s) => {
     const lvl = s.level as Level;

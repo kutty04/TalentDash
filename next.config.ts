@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    // Run static generation sequentially to prevent overloading Neon's direct connections
+    workerThreads: false,
+  }
 };
 
 export default nextConfig;

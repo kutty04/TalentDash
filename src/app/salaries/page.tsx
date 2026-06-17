@@ -72,7 +72,10 @@ export default async function SalariesPage({ searchParams }: PageProps) {
 
   let activeCurrency: Currency | undefined = undefined;
   if (params.currency) {
-    activeCurrency = params.currency.toUpperCase() as Currency;
+    const parsedCurr = params.currency.toUpperCase() as Currency;
+    if (Object.values(Currency).includes(parsedCurr)) {
+      activeCurrency = parsedCurr;
+    }
   }
 
   const sort = params.sort || 'total_compensation';

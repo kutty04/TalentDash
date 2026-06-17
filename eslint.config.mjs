@@ -1,16 +1,13 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import { FlatCompat } from "@eslint/eslintrc";
+
+// Bridge legacy eslint-config-next (ESLint 8 format) into ESLint 9 flat config.
+// eslint-config-next@15 does not natively export flat config arrays; FlatCompat
+// wraps the legacy { extends: [...] } shape into flat-config-compatible objects.
+const compat = new FlatCompat();
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  {
-    rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-      "react-hooks/set-state-in-effect": "warn",
-    }
-  },
+  ...compat.extends("next/core-web-vitals"),
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

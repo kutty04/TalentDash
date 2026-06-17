@@ -50,31 +50,20 @@ model Salary {
 }
 
 enum Level {
-  L3
-  L4
-  L5
-  L6
   SDE_I
   SDE_II
   SDE_III
   STAFF
   PRINCIPAL
-  IC4
-  IC5
 }
 
 enum Currency {
   INR
   USD
-  GBP
-  EUR
 }
 
 enum Source {
   ANONYMOUS_USER
   OFFER_LETTER
   VERIFIED_EMAIL
-  CONTRIBUTOR
-  SCRAPED
-  AI_INFERRED
 }

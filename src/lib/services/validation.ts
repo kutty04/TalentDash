@@ -1,4 +1,5 @@
 import { Level, Currency, Source } from '@prisma/client';
+import aliasesData from '../aliases.json';
 
 export interface ValidatedSalaryInput {
   company: string;
@@ -12,6 +13,7 @@ export interface ValidatedSalaryInput {
   stock: number;
   source: Source;
   confidence_score?: number;
+  is_verified?: boolean;
 }
 
 export type ValidationError = {
@@ -106,12 +108,18 @@ export function validateSalaryInput(raw: any): ValidationResult {
   // Source default check
   let source = raw.source;
   if (source === undefined || source === null || source === '') {
-    source = Source.ANONYMOUS_USER;
+    source = Source.CONTRIBUTOR;
   }
 
   // 3. Enum Validation Checks
-  // Normalize hyphenated Level formats e.g. "SDE-I" -> "SDE_I"
-  const levelString = String(raw.level).trim().toUpperCase().replace('-', '_');
+  // Normalize hyphenated Level formats:
+  let levelString = String(raw.level).trim().toUpperCase();
+  if (levelString === 'SDE-I' || levelString === 'SDE I') levelString = 'SDE_I';
+  else if (levelString === 'SDE-II' || levelString === 'SDE II') levelString = 'SDE_II';
+  else if (levelString === 'SDE-III' || levelString === 'SDE III') levelString = 'SDE_III';
+  else if (levelString === 'IC-4' || levelString === 'IC 4') levelString = 'IC4';
+  else if (levelString === 'IC-5' || levelString === 'IC 5') levelString = 'IC5';
+
   const validLevels = Object.values(Level) as string[];
   if (!validLevels.includes(levelString)) {
     return {
@@ -209,6 +217,7 @@ export function validateSalaryInput(raw: any): ValidationResult {
       stock,
       source: verifiedSource,
       confidence_score: confidenceScore,
+      is_verified: raw.is_verified !== undefined ? Boolean(raw.is_verified) : undefined,
     },
   };
 }
@@ -228,6 +237,7 @@ export function normalizeCompanyName(raw: string): { normalizedName: string; slu
   
   // Strip legal suffixes
   const suffixes = [
+    /\bprivate\s+limited\b/gi,
     /\bpvt\s+ltd\b/gi,
     /\bpvt\.?\s*ltd\.?\b/gi,
     /\blimited\b/gi,
@@ -247,17 +257,7 @@ export function normalizeCompanyName(raw: string): { normalizedName: string; slu
   cleaned = cleaned.trim().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "").replace(/\s+/g, " ").trim();
 
   // Alias lookup table mapping
-  const aliases: Record<string, string> = {
-    'tata consultancy services': 'tcs',
-    'tata consultancy': 'tcs',
-    'tcs limited': 'tcs',
-    'tcs ltd': 'tcs',
-    'amazon web services': 'amazon',
-    'aws': 'amazon',
-    'infosys bpo': 'infosys',
-    'wipro technologies': 'wipro',
-    'flipkart internet': 'flipkart',
-  };
+  const aliases: Record<string, string> = aliasesData;
 
   if (aliases[cleaned]) {
     cleaned = aliases[cleaned];

@@ -22,15 +22,36 @@ export function LevelDistributionBar({ distribution, totalRecords }: Distributio
     };
   });
 
-  // Sort levels by standard ordering to keep chart consistent (SDE_I -> PRINCIPAL)
+  // Sort levels by standard ordering to keep chart consistent
   const order: Record<Level, number> = {
-    [Level.SDE_I]: 1,
-    [Level.SDE_II]: 2,
-    [Level.SDE_III]: 3,
-    [Level.STAFF]: 4,
-    [Level.PRINCIPAL]: 5,
+    [Level.L3]: 1,
+    [Level.L4]: 2,
+    [Level.L5]: 3,
+    [Level.L6]: 4,
+    [Level.SDE_I]: 5,
+    [Level.SDE_II]: 6,
+    [Level.SDE_III]: 7,
+    [Level.STAFF]: 8,
+    [Level.PRINCIPAL]: 9,
+    [Level.IC4]: 10,
+    [Level.IC5]: 11,
   };
-  items.sort((a, b) => (order[a.level] || 0) - (order[b.level] || 0));
+
+  const LEVEL_BAR_COLORS: Record<Level, string> = {
+    [Level.L3]: 'bg-zinc-300',
+    [Level.L4]: 'bg-blue-400',
+    [Level.L5]: 'bg-violet-400',
+    [Level.L6]: 'bg-fuchsia-400',
+    [Level.SDE_I]: 'bg-slate-400',
+    [Level.SDE_II]: 'bg-sky-400',
+    [Level.SDE_III]: 'bg-indigo-500',
+    [Level.STAFF]: 'bg-purple-500',
+    [Level.PRINCIPAL]: 'bg-slate-900',
+    [Level.IC4]: 'bg-amber-400',
+    [Level.IC5]: 'bg-emerald-500',
+  };
+
+  items.sort((a, b) => (order[a.level] || 99) - (order[b.level] || 99));
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-premium transition-all duration-300 hover:shadow-premium-hover space-y-5">
@@ -42,12 +63,7 @@ export function LevelDistributionBar({ distribution, totalRecords }: Distributio
       <div className="flex h-7 w-full rounded-full overflow-hidden bg-slate-100 p-0.5 border border-slate-200/20">
         {items.map((item) => {
           if (item.percentage === 0) return null;
-          // Apply custom premium color palettes
-          let barBg = 'bg-slate-400';
-          if (item.level === Level.SDE_II) barBg = 'bg-sky-400';
-          if (item.level === Level.SDE_III) barBg = 'bg-indigo-500';
-          if (item.level === Level.STAFF) barBg = 'bg-purple-500';
-          if (item.level === Level.PRINCIPAL) barBg = 'bg-slate-900';
+          const barBg = LEVEL_BAR_COLORS[item.level] || 'bg-slate-400';
 
           return (
             <div
@@ -64,11 +80,7 @@ export function LevelDistributionBar({ distribution, totalRecords }: Distributio
       <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1">
         {items.map((item) => {
           const displayName = item.level.replace('_', '-');
-          let bulletBg = 'bg-slate-400';
-          if (item.level === Level.SDE_II) bulletBg = 'bg-sky-400';
-          if (item.level === Level.SDE_III) bulletBg = 'bg-indigo-500';
-          if (item.level === Level.STAFF) bulletBg = 'bg-purple-500';
-          if (item.level === Level.PRINCIPAL) bulletBg = 'bg-slate-900';
+          const bulletBg = LEVEL_BAR_COLORS[item.level] || 'bg-slate-400';
 
           return (
             <div key={item.level} className="flex items-center space-x-2 text-sm font-medium">

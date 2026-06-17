@@ -99,7 +99,7 @@ export async function createSalary(input: ValidatedSalaryInput) {
       total_compensation: totalCompensation,
       source: input.source,
       confidence_score: input.confidence_score ?? 1.0,
-      is_verified: input.source === Source.VERIFIED_EMAIL || input.source === Source.OFFER_LETTER,
+      is_verified: input.source === Source.VERIFIED_EMAIL || input.source === Source.OFFER_LETTER || (input.is_verified ?? false),
     },
     include: {
       company: true,

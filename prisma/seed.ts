@@ -136,6 +136,49 @@ const salariesData: Array<{
   is_verified: boolean;
   submitted_days_ago?: number;
 }> = [
+  // --- COMPLIANCE ENUM AND CURRENCY SEED CASES ---
+  {
+    companySlug: 'google',
+    role: 'Software Engineer',
+    level: Level.L3,
+    location: 'London',
+    currency: Currency.GBP,
+    experience_years: 1,
+    base_salary: 65000,
+    bonus: 8000,
+    stock: 12000,
+    source: Source.CONTRIBUTOR,
+    confidence_score: 0.95,
+    is_verified: true,
+  },
+  {
+    companySlug: 'meta',
+    role: 'Senior Software Engineer',
+    level: Level.IC4,
+    location: 'Dublin',
+    currency: Currency.EUR,
+    experience_years: 6,
+    base_salary: 110000,
+    bonus: 15000,
+    stock: 35000,
+    source: Source.SCRAPED,
+    confidence_score: 0.88,
+    is_verified: false,
+  },
+  {
+    companySlug: 'microsoft',
+    role: 'Principal Engineer',
+    level: Level.IC5,
+    location: 'Munich',
+    currency: Currency.EUR,
+    experience_years: 12,
+    base_salary: 140000,
+    bonus: 25000,
+    stock: 55000,
+    source: Source.AI_INFERRED,
+    confidence_score: 0.75,
+    is_verified: false,
+  },
   // --- ZEРTO (Single-record company edge case) ---
   {
     companySlug: 'zepto',
@@ -1087,13 +1130,13 @@ async function main() {
   await prisma.company.deleteMany({});
 
   console.log('Seeding Companies...');
-  const createdCompanies = await Promise.all(
-    companiesData.map(async (company) => {
-      return prisma.company.create({
-        data: company,
-      });
-    })
-  );
+  const createdCompanies = [];
+  for (const company of companiesData) {
+    const created = await prisma.company.create({
+      data: company,
+    });
+    createdCompanies.push(created);
+  }
 
   console.log(`Created ${createdCompanies.length} companies.`);
 

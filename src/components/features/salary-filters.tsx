@@ -215,6 +215,24 @@ export function SalaryFilters({ initialFilters }: FiltersProps) {
             >
               USD ($)
             </button>
+            <button
+              type="button"
+              onClick={() => handleCurrencyToggle(Currency.GBP)}
+              className={`px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-200 cursor-pointer ${
+                currency === Currency.GBP ? 'bg-white text-brand-black shadow-[0_1px_2px_rgba(0,0,0,0.05)]' : 'text-brand-muted hover:text-brand-black'
+              }`}
+            >
+              GBP (£)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCurrencyToggle(Currency.EUR)}
+              className={`px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-200 cursor-pointer ${
+                currency === Currency.EUR ? 'bg-white text-brand-black shadow-[0_1px_2px_rgba(0,0,0,0.05)]' : 'text-brand-muted hover:text-brand-black'
+              }`}
+            >
+              EUR (€)
+            </button>
           </div>
         </div>
 

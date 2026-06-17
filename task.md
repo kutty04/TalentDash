@@ -1,0 +1,25 @@
+- [x] Database Schema and Migration History
+  - [x] Modify `schema.prisma` with updated Level, Currency, and Source enums.
+  - [x] Temporarily change `.env` URL to the scratch DB.
+  - [x] Generate migrations folder using `prisma migrate dev`.
+  - [x] Review the generated SQL script.
+  - [x] Revert `.env` URL to production DB and deploy migrations.
+- [x] Refactor Codebase Logic
+  - [x] Create `aliases.json` containing company name mappings.
+  - [x] Update `validation.ts` to import `aliases.json` and support new enums.
+  - [x] Update `salary-service.ts` to support dual-taxonomy verification.
+  - [x] Update `seed.ts` with spec-compliant enums.
+- [x] Upgrade Typography and Styling
+  - [x] Modify `layout.tsx` to use Inter font instead of Plus Jakarta Sans.
+  - [x] Modify `globals.css` to update font variables.
+  - [x] Modify `constants.ts` to add level badge colors.
+  - [x] Modify `level-distribution-bar.tsx` to handle all level values.
+- [x] Test and Document Exclusions
+  - [x] Create `src/tests/unit.test.ts` for unit testing validation and calculations.
+  - [x] Update `package.json` with test scripts and dependencies.
+  - [x] Update `README.md` with setup steps, Next.js version rationale, and AI pipeline out-of-scope status.
+- [x] Validate and Deploy
+  - [x] Run test suite using `npm run test`.
+  - [x] Verify build compiles successfully via `npm run build`.
+  - [x] Deploy the compliance version to Vercel.
+  - [x] Produce final compliance report.

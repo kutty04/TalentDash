@@ -126,14 +126,44 @@ export default async function SalariesPage({ searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Header section */}
-      <div className="border-b border-gray-200 pb-5">
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-          Salary Intelligence
-        </h1>
-        <p className="mt-2 text-sm text-gray-500">
-          Compare total compensation packages, stock allocation metrics, and bonuses across tech firms.
-        </p>
+      {/* Premium Hero Header Section */}
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-8 sm:p-10 shadow-premium transition-all duration-300 hover:shadow-premium-hover">
+        <div className="absolute top-0 right-0 -mt-4 -mr-4 w-56 h-56 rounded-full bg-brand-coral/5 blur-3xl -z-10"></div>
+        <div className="absolute bottom-0 left-0 -mb-4 -ml-4 w-56 h-56 rounded-full bg-sky-500/5 blur-3xl -z-10"></div>
+
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div className="space-y-4 max-w-2xl">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-brand-coral border border-rose-100/50">
+              ✨ Compensation Intelligence
+            </span>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-brand-black tracking-tight leading-tight">
+              Compare software developer salaries <span className="text-brand-coral">transparently</span>
+            </h1>
+            <p className="text-sm sm:text-base text-brand-muted leading-relaxed">
+              Access structured, comparable, decision-ready career metrics, stock grants, and base salaries at internet scale.
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-6 bg-slate-50 border border-slate-100 rounded-xl px-5 py-4 self-start md:self-auto min-w-[200px]">
+            <div className="space-y-1">
+              <span className="text-2xl font-extrabold text-brand-black block tracking-tight">
+                65+
+              </span>
+              <span className="text-xs font-semibold text-brand-muted uppercase tracking-wider block">
+                Verified Listings
+              </span>
+            </div>
+            <div className="h-8 w-px bg-slate-200"></div>
+            <div className="space-y-1">
+              <span className="text-2xl font-extrabold text-sky-600 block tracking-tight">
+                12
+              </span>
+              <span className="text-xs font-semibold text-brand-muted uppercase tracking-wider block">
+                Top Companies
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Filters (Wrapped in Suspense to avoid build-time layout warnings) */}

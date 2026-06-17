@@ -24,7 +24,7 @@ export function EmptyState() {
       </p>
       <a
         href="/salaries"
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-xs text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden"
+        className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-full shadow-xs text-white bg-brand-coral hover:bg-brand-coral/90 transition-colors focus:outline-hidden cursor-pointer"
       >
         Clear All Filters
       </a>

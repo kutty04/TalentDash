@@ -18,10 +18,9 @@ export function EmptyState() {
           d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">No Salary Records Found</h3>
-      <p className="text-sm text-gray-500 max-w-sm mb-5">
-        We could not find any compensation data matching your selected filters. Try broadening your query or clearing active constraints.
-      </p>
+      <h3 className="text-lg font-semibold text-gray-900 mb-5">
+        No records found for these filters. Try removing a filter.
+      </h3>
       <a
         href="/salaries"
         className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-full shadow-xs text-white bg-brand-coral hover:bg-brand-coral/90 transition-colors focus:outline-hidden cursor-pointer"

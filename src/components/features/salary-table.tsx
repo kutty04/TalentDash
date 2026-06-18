@@ -202,7 +202,7 @@ export function SalaryTable({ data, displayCurrency, currentSort, currentOrder, 
 
                 {/* Total Compensation (Dominant number, data blue #0369A1, bold, larger, badge style) */}
                 <td className="px-6 py-4.5 whitespace-nowrap">
-                  <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-sky-50 text-[#0369A1] font-bold text-sm border border-sky-100/70 tracking-tight text-center min-w-[110px]">
+                  <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-sky-50 text-[#0369A1] font-bold text-base border border-sky-100/70 tracking-tight text-center min-w-[110px]">
                     {getDisplayValue(record.total_compensation, record.currency)}
                   </span>
                 </td>

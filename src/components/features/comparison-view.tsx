@@ -34,18 +34,29 @@ interface ComparisonData {
 
 interface Props {
   initialRecords: SalaryRecord[];
+  defaultS1?: string;
 }
 
-export function ComparisonView({ initialRecords }: Props) {
+export function ComparisonView({ initialRecords, defaultS1 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Dropdown states
-  const [s1, setS1] = useState(searchParams.get('s1') || '');
+  const [s1, setS1] = useState(searchParams.get('s1') || defaultS1 || '');
   const [s2, setS2] = useState(searchParams.get('s2') || '');
   const [comparison, setComparison] = useState<ComparisonData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Synchronize prefilled defaultS1 to URL parameters if not already present
+  useEffect(() => {
+    if (defaultS1 && !searchParams.get('s1')) {
+      setS1(defaultS1);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('s1', defaultS1);
+      router.replace(`/compare?${params.toString()}`);
+    }
+  }, [defaultS1, searchParams, router]);
 
   // Trigger comparison data fetch when s1 or s2 changes
   useEffect(() => {

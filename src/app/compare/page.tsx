@@ -19,7 +19,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ComparePage() {
+interface PageProps {
+  searchParams: Promise<{
+    c1?: string;
+    s1?: string;
+    s2?: string;
+  }>;
+}
+
+export default async function ComparePage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const c1 = params.c1;
+  const s1 = params.s1;
+
   // Query all salary listings to populate comparison dropdown selectors
   let records: any[] = [];
   try {
@@ -29,6 +41,19 @@ export default async function ComparePage() {
     });
   } catch (error) {
     console.error('Failed to load comparison source options:', error);
+  }
+
+  // Pre-fill logic: pick a representative record (highest total comp) for the company
+  let defaultS1 = '';
+  if (c1 && !s1) {
+    const companyRecords = records.filter(
+      (r) => r.company.slug.toLowerCase() === c1.toLowerCase()
+    );
+    if (companyRecords.length > 0) {
+      // Sort by total_compensation descending to get a representative high-paying/principal or median record
+      companyRecords.sort((a, b) => b.total_compensation - a.total_compensation);
+      defaultS1 = companyRecords[0].id;
+    }
   }
 
   // Inject JSON-LD structured WebPage/Application metadata to boost SEO crawling index metrics
@@ -60,7 +85,7 @@ export default async function ComparePage() {
 
       {/* Comparison View wrapper */}
       <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div></div>}>
-        <ComparisonView initialRecords={records as any} />
+        <ComparisonView initialRecords={records as any} defaultS1={defaultS1} />
       </Suspense>
     </main>
   );

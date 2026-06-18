@@ -10,6 +10,28 @@ In modern recruiting, compensation data is noisy and unstructured. TalentDash br
 
 ---
 
+## 📸 Screenshots & Gallery
+
+Here are the screenshots of the main paths and operations captured from the live deployment:
+
+| 🏠 Homepage (`/`) | 📊 Salaries Page (`/salaries`) |
+|---|---|
+| <img src="./public/screenshots/step1_home.png" width="400" alt="Homepage" /> | <img src="./public/screenshots/step2_salaries.png" width="400" alt="Salaries Page" /> |
+
+| 🏢 Company Profile (`/companies/google`) | ⚖️ Comparison Page (`/compare`) |
+|---|---|
+| <img src="./public/screenshots/step3_company.png" width="400" alt="Company Profile" /> | <img src="./public/screenshots/step4_compare.png" width="400" alt="Comparison Page" /> |
+
+| 🔍 Search Results Feed | 🏷️ Interactive Filter (SDE-I) |
+|---|---|
+| <img src="./public/screenshots/step5_search.png" width="400" alt="Search Feed" /> | <img src="./public/screenshots/step6_filters.png" width="400" alt="Filtered Feed" /> |
+
+| ⚠️ Spec-Compliant Empty State | |
+|---|---|
+| <img src="./public/screenshots/step7_empty_state.png" width="400" alt="Empty State" /> | |
+
+---
+
 ## 🌟 Features
 
 * **Salary Intelligence Feed (`/salaries`)**: Responsive, paginated compensation table displaying salary packages (base salary, performance bonus, stock options, and total compensation) formatted using the Indian Numbering System (Lakh/Crore) and local USD structures.
